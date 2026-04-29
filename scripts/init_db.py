@@ -7,7 +7,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 
-from src.constants.database_columns import (
+from src.constants.database_columns import ( # noqa: E402
     OperatorStatusesColumns, 
     OperatorsColumns,
 )
