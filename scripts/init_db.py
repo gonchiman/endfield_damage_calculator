@@ -7,22 +7,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 
+from src.constants.paths import DB_PATH, INSERT_OPERATOR_MASTER_SQL_PATH, INSERT_OPERATOR_STATUSES_SQL_PATH, OPERATOR_MASTER_CSV_PATH, OPERATOR_STATUSES_CSV_PATH, SCHEMA_PATH # noqa: E402
 from src.constants.database_columns import ( # noqa: E402
     OperatorStatusesColumns, 
-    OperatorsColumns,
+    OperatorMasterColumns,
 )
-
-
-SQL_DIR = BASE_DIR / "sql"
-
-DB_PATH = BASE_DIR / "data" / "endfield.db"
-
-SCHEMA_PATH = SQL_DIR / "schema.sql"
-INSERT_OPERATORS_SQL_PATH = SQL_DIR / "insert_operators.sql"
-INSERT_OPERATOR_STATUSES_SQL_PATH = SQL_DIR / "insert_operator_statuses.sql"
-
-OPERATORS_CSV_PATH = BASE_DIR / "data" / "csv" / "operators.csv"
-OPERATOR_STATUSES_CSV_PATH = BASE_DIR / "data" / "csv" / "operator_statuses.csv"
 
 
 def init_db():
@@ -44,8 +33,8 @@ def init_db():
 
 
 def insert_operators(conn):
-    with open(OPERATORS_CSV_PATH, encoding="utf-8", newline="") as f_csv, \
-        open(INSERT_OPERATORS_SQL_PATH, encoding="utf-8") as f_sql:
+    with open(OPERATOR_MASTER_CSV_PATH, encoding="utf-8", newline="") as f_csv, \
+        open(INSERT_OPERATOR_MASTER_SQL_PATH, encoding="utf-8") as f_sql:
         reader = csv.DictReader(f_csv)
         insert_sql = f_sql.read()
 
@@ -53,8 +42,8 @@ def insert_operators(conn):
             conn.execute(
                 insert_sql, 
                 (
-                    row[OperatorsColumns.OPERATOR_ID],
-                    row[OperatorsColumns.OPERATOR_NAME],
+                    row[OperatorMasterColumns.OPERATOR_ID],
+                    row[OperatorMasterColumns.OPERATOR_NAME],
                  ),
             )
 

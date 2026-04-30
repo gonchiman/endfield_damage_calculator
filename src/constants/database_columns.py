@@ -1,4 +1,4 @@
-class OperatorsColumns:
+class OperatorMasterColumns:
     OPERATOR_ID = "operator_id"
     OPERATOR_NAME = "operator_name"
 

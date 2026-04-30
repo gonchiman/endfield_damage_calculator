@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS operators (
+CREATE TABLE IF NOT EXISTS operator_master (
     operator_id TEXT PRIMARY KEY,
     operator_name TEXT NOT NULL
 );
