@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS operator_master (
     operator_id TEXT PRIMARY KEY,
-    operator_name TEXT NOT NULL
+    operator_name TEXT NOT NULL,
+    main_stat TEXT NOT NULL,
+    sub_stat TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS operator_statuses (
@@ -12,5 +14,5 @@ CREATE TABLE IF NOT EXISTS operator_statuses (
     will INTEGER NOT NULL,
     base_atk INTEGER NOT NULL,
     PRIMARY KEY (operator_id, level),
-    FOREIGN KEY (operator_id) REFERENCES operators(operator_id)
+    FOREIGN KEY (operator_id) REFERENCES operator_master(operator_id)
 );

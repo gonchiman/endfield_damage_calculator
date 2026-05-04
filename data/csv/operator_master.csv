@@ -1,2 +1,2 @@
-operator_id,operator_name
-lifeng,Lifeng
+operator_id,operator_name,main_stat,sub_stat
+lifeng,Lifeng,agility,strength

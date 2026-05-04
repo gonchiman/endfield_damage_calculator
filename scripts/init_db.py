@@ -7,10 +7,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 
-from src.constants.paths import DB_PATH, INSERT_OPERATOR_MASTER_SQL_PATH, INSERT_OPERATOR_STATUSES_SQL_PATH, OPERATOR_MASTER_CSV_PATH, OPERATOR_STATUSES_CSV_PATH, SCHEMA_PATH # noqa: E402
-from src.constants.database_columns import ( # noqa: E402
-    OperatorStatusesColumns, 
-    OperatorMasterColumns,
+from src.constants.paths import ( # noqa: E402
+    DB_PATH, 
+    OPERATOR_MASTER_CSV_PATH, 
+    OPERATOR_STATUSES_CSV_PATH, 
+    SCHEMA_PATH
 )
 
 
@@ -33,40 +34,45 @@ def init_db():
 
 
 def insert_operators(conn):
-    with open(OPERATOR_MASTER_CSV_PATH, encoding="utf-8", newline="") as f_csv, \
-        open(INSERT_OPERATOR_MASTER_SQL_PATH, encoding="utf-8") as f_sql:
+    with open(OPERATOR_MASTER_CSV_PATH, encoding="utf-8", newline="") as f_csv:
         reader = csv.DictReader(f_csv)
-        insert_sql = f_sql.read()
+        columns = reader.fieldnames
+
+        columns_text = ", ".join(columns)
+        placeholder_text = ", ".join(["?"] * len(columns))
+
+        sql = f"""
+            INSERT OR REPLACE INTO operator_master (
+                {columns_text}
+            ) VALUES (
+                {placeholder_text}
+            )
+        """
 
         for row in reader:
-            conn.execute(
-                insert_sql, 
-                (
-                    row[OperatorMasterColumns.OPERATOR_ID],
-                    row[OperatorMasterColumns.OPERATOR_NAME],
-                 ),
-            )
+            values = [row[column] for column in columns]
+            conn.execute(sql, values)
 
 
 def insert_operator_statuses(conn):
-    with open(OPERATOR_STATUSES_CSV_PATH, encoding="utf-8", newline="") as f_csv, \
-        open(INSERT_OPERATOR_STATUSES_SQL_PATH, encoding="utf-8") as f_sql:
+    with open(OPERATOR_STATUSES_CSV_PATH, encoding="utf-8", newline="") as f_csv:
         reader = csv.DictReader(f_csv)
-        insert_sql = f_sql.read()
+        columns = reader.fieldnames
+
+        columns_text = ", ".join(columns)
+        placeholder_text = ", ".join(["?"] * len(columns))
+
+        sql = f"""
+            INSERT OR REPLACE INTO operator_statuses (
+                {columns_text}
+            ) VALUES (
+                {placeholder_text}
+            )
+        """
 
         for row in reader:
-            conn.execute(
-                insert_sql,
-                (
-                    row[OperatorStatusesColumns.OPERATOR_ID],
-                    int(row[OperatorStatusesColumns.LEVEL]),
-                    int(row[OperatorStatusesColumns.STRENGTH]),
-                    int(row[OperatorStatusesColumns.AGILITY]),
-                    int(row[OperatorStatusesColumns.INTELLECT]),
-                    int(row[OperatorStatusesColumns.WILL]),
-                    int(row[OperatorStatusesColumns.BASE_ATK]),
-                ),
-            )
+            values = [row[column] for column in columns]
+            conn.execute(sql, values)
 
 
 if __name__ == "__main__":
