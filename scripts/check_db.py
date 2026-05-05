@@ -11,9 +11,12 @@ from src.repositories.operator_master_repository import OperatorMasterRepository
 
 operators = OperatorMasterRepository.find_all()
 
+print("operator master")
 for operator in operators:
     print(operator)
 
+print()
+print("operator statuses")
 statuses = OperatorStatusRepository.find_all()
 
 for status in statuses:
