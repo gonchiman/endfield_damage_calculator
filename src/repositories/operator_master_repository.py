@@ -1,5 +1,6 @@
 import sqlite3
 
+from src.entities.operator_condition import OperatorCondition
 from src.constants.paths import DB_PATH
 from src.constants.database_table_names import TableNames
 from src.repositories.repository import Repository
@@ -12,22 +13,22 @@ class OperatorMasterRepository(Repository):
     @classmethod
     def find_by_operator_id_and_column(
         cls,
-        operator_id: str,
-        column: str,
+        cond: OperatorCondition,
+        attr: str,
     ) -> int | None:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
 
             row = conn.execute(
                 f"""
-                SELECT {column}
+                SELECT {attr}
                 FROM {cls.TABLE_NAME}
                 WHERE operator_id = ?
                 """,
-                (operator_id,),
+                (cond.operator_id,),
             ).fetchone()
 
             if row is None:
                 return None
             
-            return row[column]
+            return row[attr]
