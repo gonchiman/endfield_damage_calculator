@@ -7,7 +7,7 @@ def test_find_by_operator_id_and_column():
     cond = OperatorCondition(operator_id="lifeng", level=1)
     attr = OperatorMasterColumns.MAIN_STAT
 
-    main_stat = OperatorMasterRepository.find_by_operator_id_and_column(
+    main_stat = OperatorMasterRepository.find_value(
         cond,
         attr,
     )

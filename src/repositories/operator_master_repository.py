@@ -11,7 +11,7 @@ class OperatorMasterRepository(Repository):
 
         
     @classmethod
-    def find_by_operator_id_and_column(
+    def find_value(
         cls,
         cond: OperatorCondition,
         attr: str,
