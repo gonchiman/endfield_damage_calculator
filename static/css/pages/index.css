@@ -1,0 +1,6 @@
+.link-background {
+    padding: var(--panel-padding);
+    border-radius: var(--panel-border-radius);
+    width: 400px;
+    background-color: var(--panel-bg);
+}
