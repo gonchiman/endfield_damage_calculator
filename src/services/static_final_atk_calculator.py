@@ -33,4 +33,4 @@ class StaticFinalAtkCalculater:
         main_stat = OperatorStatusRepository.find_value(cond, main_attr)
         sub_stat = OperatorStatusRepository.find_value(cond, sub_attr)
 
-        return 1 + main_stat * 0.5 + sub_stat * 0.2
+        return 1 + main_stat * 0.005 + sub_stat * 0.002
