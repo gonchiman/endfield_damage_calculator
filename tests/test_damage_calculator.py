@@ -12,6 +12,6 @@ def test_get_damage():
     )
 
     damage = DamageCalculater.get_damage(operator_condition)
-    expected = 30 * (1 + (20*0.5) + (14*0.2))
+    expected = 30 * (1 + (20*0.005) + (14*0.002))
 
     assert damage == expected
