@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/damage_calculator_1.css') }}">
+{% endblock %}
+
+{% block content %}
+<form action="/damage_calculator_1" method="post">
+    <div>
+        <label for="operator_id">Select Operator</label>
+        <select id="operator_id" name="operator_id" onchange="this.form.submit()">
+            {% for operator_id in operator_ids %}
+                <option value="{{ operator_id.value }}" {% if operator_id.value == selected_operator_id %}selected{% endif %}>
+                    {{ operator_id.value }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="level">Select Level</label>
+        <select id="level" name="level" onchange="this.form.submit()">
+            {% for level in levels %}
+                <option value="{{ level }}" {% if level == selected_level %}selected{% endif %}>
+                    {{ level }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+{% if damage is not none %}
+    <div class="result">
+        <p>Damage: {{ damage }}</p>
+    </div>
+{% endif %}
+
+{% endblock %}

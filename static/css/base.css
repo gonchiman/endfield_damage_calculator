@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+    margin: 24px;
+    line-height: 1.6;
+    background-color: rgb(36, 39, 41);
+}
+
+h1 {
+    margin: 0;
+}
+
+.link-background {
+    padding: var(--panel-padding);
+    border-radius: var(--panel-border-radius);
+    max-width: var(--panel-max-width);
+    min-width: var(--panel-min-width);
+    background-color: var(--panel-bg);
+}
