@@ -27,3 +27,7 @@ Thumbs.db
 # temporary files
 *.tmp
 *.log
+
+# generated images
+classes.png
+packages.png
