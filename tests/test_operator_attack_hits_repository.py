@@ -19,3 +19,18 @@ def test_find_attack_hit():
         multiplier=35,
         attribute=AttackAttributes.PHYSICAL,
     )
+
+
+def test_find_attack_hits():
+    attack_hits = OperatorAttackHitsRepository.find_attack_hits(
+        OperatorIds.LIFENG,
+        AttackTypes.BASIC_ATTACK,
+        1,
+    )
+
+    assert attack_hits == [
+        AttackHit(multiplier=24, attribute=AttackAttributes.PHYSICAL),
+        AttackHit(multiplier=29, attribute=AttackAttributes.PHYSICAL),
+        AttackHit(multiplier=35, attribute=AttackAttributes.PHYSICAL),
+        AttackHit(multiplier=68, attribute=AttackAttributes.PHYSICAL),
+    ]

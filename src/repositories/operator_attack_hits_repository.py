@@ -14,6 +14,36 @@ class OperatorAttackHitsRepository(Repository):
     TABLE_NAME = TableNames.OPERATOR_ATTACK_HITS
 
     @classmethod
+    def find_attack_hits(
+        cls,
+        operator_id: OperatorIds,
+        attack_type: AttackTypes,
+        rank: int,
+    ) -> list[AttackHit]:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+
+            rows = conn.execute(
+                f"""
+                SELECT
+                    {OperatorAttackHitsColumns.MULTIPLIER},
+                    {OperatorAttackHitsColumns.DAMAGE_TYPE}
+                FROM {cls.TABLE_NAME}
+                WHERE {OperatorAttackHitsColumns.OPERATOR_ID} = ?
+                AND {OperatorAttackHitsColumns.ATTACK_TYPE} = ?
+                AND {OperatorAttackHitsColumns.RANK} = ?
+                ORDER BY {OperatorAttackHitsColumns.ATTACK_STEP}
+                """,
+                (
+                    operator_id.value,
+                    attack_type.value,
+                    rank,
+                ),
+            ).fetchall()
+
+        return [cls._to_attack_hit(row) for row in rows]
+
+    @classmethod
     def find_attack_hit(
         cls,
         operator_id: OperatorIds,
@@ -46,6 +76,10 @@ class OperatorAttackHitsRepository(Repository):
         if row is None:
             return None
 
+        return cls._to_attack_hit(row)
+
+    @classmethod
+    def _to_attack_hit(cls, row: sqlite3.Row) -> AttackHit:
         return AttackHit(
             multiplier=row[OperatorAttackHitsColumns.MULTIPLIER],
             attribute=cls._to_attack_attribute(
