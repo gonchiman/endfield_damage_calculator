@@ -1,0 +1,7 @@
+﻿operator_id,attack_type,rank,attack_step,multiplier,damage_type
+lifeng,basic_attack,1,1,24,physical
+lifeng,basic_attack,1,2,29,physical
+lifeng,basic_attack,1,3,35,physical
+lifeng,basic_attack,1,4,68,physical
+lifeng,final_strike,1,1,400,physical
+lifeng,dive_attack,1,1,80,physical
