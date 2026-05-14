@@ -34,3 +34,27 @@ def test_find_attack_hits():
         AttackHit(multiplier=35, attribute=AttackAttributes.PHYSICAL),
         AttackHit(multiplier=68, attribute=AttackAttributes.PHYSICAL),
     ]
+
+
+def test_find_lifeng_final_strike_hits():
+    attack_hits = OperatorAttackHitsRepository.find_attack_hits(
+        OperatorIds.LIFENG,
+        AttackTypes.FINAL_STRIKE,
+        1,
+    )
+
+    assert attack_hits == [
+        AttackHit(multiplier=400, attribute=AttackAttributes.PHYSICAL),
+    ]
+
+
+def test_find_lifeng_dive_attack_hits():
+    attack_hits = OperatorAttackHitsRepository.find_attack_hits(
+        OperatorIds.LIFENG,
+        AttackTypes.DIVE_ATTACK,
+        1,
+    )
+
+    assert attack_hits == [
+        AttackHit(multiplier=80, attribute=AttackAttributes.PHYSICAL),
+    ]
