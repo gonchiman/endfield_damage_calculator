@@ -33,10 +33,6 @@ CSV_IMPORTS = (
 
 def init_db():
     DB_PATH.parent.mkdir(exist_ok=True)
-
-    if DB_PATH.exists():
-        DB_PATH.unlink()
-
     conn = sqlite3.connect(DB_PATH)
 
     create_tables(conn)

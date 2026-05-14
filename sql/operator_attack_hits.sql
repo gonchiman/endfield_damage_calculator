@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS operator_attack_hits (
     operator_id TEXT NOT NULL,
     attack_type TEXT NOT NULL,
-    rank INTEGER NOT NULL,
+    rank INTEGER NOT NULL CHECK (rank BETWEEN 1 AND 12),
     attack_step INTEGER NOT NULL,
     multiplier INTEGER NOT NULL,
     damage_type TEXT NOT NULL,
