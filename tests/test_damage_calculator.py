@@ -1,17 +1,89 @@
-from src.entities.operator_condition import OperatorCondition
-from src.services.damage_calculator import DamageCalculater
+import pytest
+
+from src.constants.attack_attributes import AttackAttributes
+from src.constants.attack_types import AttackTypes
+from src.entities.attack_hit import AttackHit
+from src.services.damage_calculator import DamageCalculator
 
 
-def test_get_damage():
-    operator_id = "lifeng"
-    operator_level = 1
+class Attack:
+    def __init__(self, attack_sequence):
+        self.attack_sequence = attack_sequence
 
-    operator_condition = OperatorCondition(
-        operator_id,
-        operator_level
+
+class DummyOperator:
+    def __init__(self):
+        self.base_atk = 1000
+        self.basic_attack = Attack(
+            [
+                AttackHit(multiplier=24, attribute=AttackAttributes.PHYSICAL),
+                AttackHit(multiplier=29, attribute=AttackAttributes.PHYSICAL),
+            ]
+        )
+        self.final_strike = Attack(
+            [
+                AttackHit(multiplier=400, attribute=AttackAttributes.PHYSICAL),
+            ]
+        )
+        self.dive_attack = Attack(
+            [
+                AttackHit(multiplier=80, attribute=AttackAttributes.PHYSICAL),
+            ]
+        )
+
+
+def test_get_basic_attack_hit_damage():
+    damage = DamageCalculator.get_hit_damage(
+        operator=DummyOperator(),
+        attack_type=AttackTypes.BASIC_ATTACK,
+        attack_step=1,
     )
 
-    damage = DamageCalculater.get_damage(operator_condition)
-    expected = 30 * (1 + (20*0.005) + (14*0.002))
+    assert damage == 120
 
-    assert damage == expected
+
+def test_get_basic_attack_second_step_hit_damage():
+    damage = DamageCalculator.get_hit_damage(
+        operator=DummyOperator(),
+        attack_type=AttackTypes.BASIC_ATTACK,
+        attack_step=2,
+    )
+
+    assert damage == 145
+
+
+def test_get_final_strike_hit_damage():
+    damage = DamageCalculator.get_hit_damage(
+        operator=DummyOperator(),
+        attack_type=AttackTypes.FINAL_STRIKE,
+    )
+
+    assert damage == 2000
+
+
+def test_get_dive_attack_hit_damage():
+    damage = DamageCalculator.get_hit_damage(
+        operator=DummyOperator(),
+        attack_type=AttackTypes.DIVE_ATTACK,
+    )
+
+    assert damage == 400
+
+
+def test_get_hit_damage_uses_resistance_coef():
+    damage = DamageCalculator.get_hit_damage(
+        operator=DummyOperator(),
+        attack_type=AttackTypes.BASIC_ATTACK,
+        attack_step=1,
+        resistance_coef=0.8,
+    )
+
+    assert damage == 96
+
+
+def test_get_hit_damage_rejects_unsupported_attack_type():
+    with pytest.raises(ValueError):
+        DamageCalculator.get_hit_damage(
+            operator=DummyOperator(),
+            attack_type=AttackTypes.BATTLE_SKILL,
+        )
