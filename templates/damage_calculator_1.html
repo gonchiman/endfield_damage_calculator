@@ -7,7 +7,7 @@
 {% block content %}
 <form action="/damage_calculator_1" method="post">
     <div>
-        <label for="operator_id">Select Operator: </label>
+        <label for="operator_id">Operator</label>
         <select id="operator_id" name="operator_id" onchange="this.form.submit()">
             {% for operator_id in operator_ids %}
                 <option value="{{ operator_id.value }}" {% if operator_id.value == selected_operator_id %}selected{% endif %}>
@@ -18,11 +18,44 @@
     </div>
 
     <div>
-        <label for="level">Select Level: </label>
-        <select id="level" name="level" onchange="this.form.submit()">
-            {% for level in levels %}
-                <option value="{{ level }}" {% if level == selected_level %}selected{% endif %}>
-                    {{ level }}
+        <label for="operator_level">Operator Level</label>
+        <select id="operator_level" name="operator_level" onchange="this.form.submit()">
+            {% for operator_level in operator_levels %}
+                <option value="{{ operator_level }}" {% if operator_level == selected_level %}selected{% endif %}>
+                    {{ operator_level }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="basic_attack_level">Basic Attack Level</label>
+        <select id="basic_attack_level" name="basic_attack_level" onchange="this.form.submit()">
+            {% for basic_attack_level in basic_attack_levels %}
+                <option value="{{ basic_attack_level }}" {% if basic_attack_level == selected_basic_attack_level %}selected{% endif %}>
+                    {{ basic_attack_level }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="attack_type">Attack Type</label>
+        <select id="attack_type" name="attack_type" onchange="this.form.submit()">
+            {% for attack_type in attack_types %}
+                <option value="{{ attack_type.value }}" {% if attack_type.value == selected_attack_type %}selected{% endif %}>
+                    {{ attack_type.value }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="attack_step">Attack Step</label>
+        <select id="attack_step" name="attack_step" onchange="this.form.submit()">
+            {% for attack_step in attack_steps %}
+                <option value="{{ attack_step }}" {% if attack_step == selected_attack_step %}selected{% endif %}>
+                    {{ attack_step }}
                 </option>
             {% endfor %}
         </select>
@@ -31,7 +64,7 @@
 
 {% if damage is not none %}
     <div class="result">
-        <p>Damage: {{ damage }}</p>
+        <p>Hit Damage: {{ damage }}</p>
     </div>
 {% endif %}
 

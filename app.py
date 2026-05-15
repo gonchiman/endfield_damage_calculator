@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request
 
+from src.constants.skill_levels import SKILL_RANKS
 from src.repositories.operator_status_repository import OperatorStatusRepository
+from src.constants.attack_types import AttackTypes
 from src.constants.operator_ids import OperatorIds
-from src.entities.operator_condition import OperatorCondition
-from src.services.damage_calculator import DamageCalculater
+from src.operators.lifeng import Lifeng
+from src.services.damage_calculator import DamageCalculator
 
 
 app = Flask(__name__)
@@ -19,23 +21,48 @@ def index():
 
 @app.route("/damage_calculator_1", methods=["GET", "POST"])
 def damage_calculator_1():
-    selected_operator_id = request.form.get("operator_id", list(OperatorIds)[0].value)
-    selected_level = int(request.form.get("level", 1))
-
-    cond = OperatorCondition(
-        operator_id=selected_operator_id,
-        level=selected_level
+    selected_operator_id = request.form.get("operator_id", OperatorIds.LIFENG.value)
+    selected_level = int(request.form.get("operator_level", 1))
+    selected_basic_attack_level = int(request.form.get("basic_attack_level", 1))
+    selected_attack_type = request.form.get(
+        "attack_type",
+        AttackTypes.BASIC_ATTACK.value,
+    )
+    selected_attack_type_enum = AttackTypes(selected_attack_type)
+    max_attack_step = 4 if selected_attack_type_enum == AttackTypes.BASIC_ATTACK else 1
+    selected_attack_step = min(
+        int(request.form.get("attack_step", 1)),
+        max_attack_step,
     )
 
-    damage = DamageCalculater.get_damage(cond)
+    lifeng = Lifeng(
+        operator_level=selected_level,
+        basic_attack_level=selected_basic_attack_level,
+    )
+
+    damage = DamageCalculator.get_hit_damage(
+        operator=lifeng,
+        attack_type=selected_attack_type_enum,
+        attack_step=selected_attack_step,
+    )
 
     return render_template(
         "damage_calculator_1.html",
         page_title="Damage Calculator 1",
         selected_operator_id=selected_operator_id,
         selected_level=selected_level,
-        operator_ids=OperatorIds,
-        levels=OperatorStatusRepository.find_levels_by_operator_id(selected_operator_id),
+        selected_basic_attack_level=selected_basic_attack_level,
+        selected_attack_type=selected_attack_type,
+        selected_attack_step=selected_attack_step,
+        operator_ids=[OperatorIds.LIFENG],
+        attack_types=[
+            AttackTypes.BASIC_ATTACK,
+            AttackTypes.FINAL_STRIKE,
+            AttackTypes.DIVE_ATTACK,
+        ],
+        attack_steps=range(1, max_attack_step + 1),
+        basic_attack_levels=SKILL_RANKS,
+        operator_levels=OperatorStatusRepository.find_levels_by_operator_id(selected_operator_id),
         damage=damage
     )
 
