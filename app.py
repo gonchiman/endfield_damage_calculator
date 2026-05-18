@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 
 from src.constants.skill_levels import SKILL_RANKS
+from src.repositories.operator_attack_hits_repository import OperatorAttackHitsRepository
 from src.repositories.operator_status_repository import OperatorStatusRepository
 from src.constants.attack_types import AttackTypes
 from src.constants.operator_ids import OperatorIds
@@ -24,12 +25,18 @@ def damage_calculator_1():
     selected_operator_id = request.form.get("operator_id", OperatorIds.LIFENG.value)
     selected_level = int(request.form.get("operator_level", 1))
     selected_basic_attack_level = int(request.form.get("basic_attack_level", 1))
+    
     selected_attack_type = request.form.get(
         "attack_type",
         AttackTypes.BASIC_ATTACK.value,
     )
     selected_attack_type_enum = AttackTypes(selected_attack_type)
-    max_attack_step = 4 if selected_attack_type_enum == AttackTypes.BASIC_ATTACK else 1
+
+    max_attack_step = OperatorAttackHitsRepository.get_step_count(
+        OperatorIds(selected_operator_id),
+        selected_attack_type_enum,
+        selected_basic_attack_level,
+    ) or 1
     selected_attack_step = min(
         int(request.form.get("attack_step", 1)),
         max_attack_step,
