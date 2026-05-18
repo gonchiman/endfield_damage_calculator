@@ -60,10 +60,22 @@ def test_find_lifeng_dive_attack_hits():
     ]
 
 def test_get_step_count():
-    step_count = OperatorAttackHitsRepository.get_step_count(
+    step_count_basic_attack = OperatorAttackHitsRepository.get_step_count(
         OperatorIds.LIFENG,
         AttackTypes.BASIC_ATTACK,
         1,
     )
+    step_count_final_strike = OperatorAttackHitsRepository.get_step_count(
+        OperatorIds.LIFENG,
+        AttackTypes.FINAL_STRIKE,
+        1,
+    )
+    step_count_dive_attack = OperatorAttackHitsRepository.get_step_count(
+        OperatorIds.LIFENG,
+        AttackTypes.DIVE_ATTACK,
+        1,
+    )
 
-    assert step_count == 4
+    assert step_count_basic_attack == 4
+    assert step_count_final_strike == 1
+    assert step_count_dive_attack == 1
