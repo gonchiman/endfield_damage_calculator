@@ -58,3 +58,12 @@ def test_find_lifeng_dive_attack_hits():
     assert attack_hits == [
         AttackHit(multiplier=80, attribute=AttackAttributes.PHYSICAL),
     ]
+
+def test_get_step_count():
+    step_count = OperatorAttackHitsRepository.get_step_count(
+        OperatorIds.LIFENG,
+        AttackTypes.BASIC_ATTACK,
+        1,
+    )
+
+    assert step_count == 4

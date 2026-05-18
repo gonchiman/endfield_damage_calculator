@@ -77,6 +77,33 @@ class OperatorAttackHitsRepository(Repository):
             return None
 
         return cls._to_attack_hit(row)
+    
+    @classmethod
+    def get_step_count(
+        cls,
+        operator_id: OperatorIds,
+        attack_type: AttackTypes,
+        rank: int,
+    ) -> int:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+
+            count = conn.execute(
+                f"""
+                SELECT COUNT(*)
+                FROM {cls.TABLE_NAME}
+                WHERE {OperatorAttackHitsColumns.OPERATOR_ID} = ?
+                AND {OperatorAttackHitsColumns.ATTACK_TYPE} = ?
+                AND {OperatorAttackHitsColumns.RANK} = ?
+                """,
+                (
+                    operator_id.value,
+                    attack_type.value,
+                    rank,
+                ),
+            ).fetchone()[0]
+
+        return count
 
     @classmethod
     def _to_attack_hit(cls, row: sqlite3.Row) -> AttackHit:
