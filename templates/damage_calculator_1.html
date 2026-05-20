@@ -49,22 +49,14 @@
             {% endfor %}
         </select>
     </div>
-
-    <div>
-        <label for="attack_step">Attack Step</label>
-        <select id="attack_step" name="attack_step" onchange="this.form.submit()">
-            {% for attack_step in attack_steps %}
-                <option value="{{ attack_step }}" {% if attack_step == selected_attack_step %}selected{% endif %}>
-                    {{ attack_step }}
-                </option>
-            {% endfor %}
-        </select>
-    </div>
 </form>
 
 {% if damage is not none %}
     <div class="result">
-        <p>Hit Damage: {{ damage }}</p>
+        {% for hit_damage in hit_damages %}
+            <p>Sequence {{ loop.index }}: {{ hit_damage }}</p>
+        {% endfor %}
+        <p>Total Damage: {{ total_damage }}</p>
     </div>
 {% endif %}
 

@@ -15,7 +15,7 @@ class Lifeng:
         basic_attack_level: int,
     ):
         self.level = operator_level
-        self.base_atk = StaticFinalAtkCalculater.get_final_atk(
+        self.static_final_atk = StaticFinalAtkCalculater.get_final_atk(
             OperatorCondition(self.ID.value, self.level)
         )
         self.basic_attack = BasicAttack(self.ID, basic_attack_level)

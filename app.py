@@ -70,7 +70,8 @@ def damage_calculator_1():
         attack_steps=range(1, max_attack_step + 1),
         skill_levels=SKILL_RANKS,
         operator_levels=OperatorStatusRepository.find_levels_by_operator_id(selected_operator_id),
-        damage=damage
+        hit_damages=hit_damages,
+        total_damage=total_damage,
     )
 
 

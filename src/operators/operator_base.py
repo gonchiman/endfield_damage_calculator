@@ -9,3 +9,4 @@ class OperatorBase:
     def __init__(self, level: int):
         self.level = level
         self.base_atk = StaticFinalAtkCalculater.get_final_atk(OperatorCondition(self.ID, self.level))
+        ///

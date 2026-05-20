@@ -13,7 +13,7 @@ class Attack:
 
 class DummyOperator:
     def __init__(self):
-        self.base_atk = 1000
+        self.static_final_atk = 1000
         self.basic_attack = Attack(
             [
                 AttackHit(multiplier=24, attribute=AttackAttributes.PHYSICAL),
@@ -87,3 +87,14 @@ def test_get_hit_damage_rejects_unsupported_attack_type():
             operator=DummyOperator(),
             attack_type=AttackTypes.BATTLE_SKILL,
         )
+
+
+def test_get_total_damage():
+    total_damage = DamageCalculator.get_total_damage(
+        operator=DummyOperator(),
+        attack_type=AttackTypes.BASIC_ATTACK,
+    )
+
+    expected_total_damage = 1000 * (24 / 100) * 0.5 + 1000 * (29 / 100) * 0.5
+
+    assert total_damage == expected_total_damage
