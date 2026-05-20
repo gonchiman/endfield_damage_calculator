@@ -29,22 +29,22 @@
     </div>
 
     <div>
-        <label for="basic_attack_level">Basic Attack Level</label>
-        <select id="basic_attack_level" name="basic_attack_level" onchange="this.form.submit()">
-            {% for basic_attack_level in basic_attack_levels %}
-                <option value="{{ basic_attack_level }}" {% if basic_attack_level == selected_basic_attack_level %}selected{% endif %}>
-                    {{ basic_attack_level }}
+        <label for="attack_type">Attack Type</label>
+        <select id="attack_type" name="attack_type" onchange="this.form.submit()">
+            {% for attack_type in attack_types %}
+                <option value="{{ attack_type.value }}" {% if attack_type.value == selected_attack_type %}selected{% endif %}>
+                    {{ attack_type.value }}
                 </option>
             {% endfor %}
         </select>
     </div>
 
     <div>
-        <label for="attack_type">Attack Type</label>
-        <select id="attack_type" name="attack_type" onchange="this.form.submit()">
-            {% for attack_type in attack_types %}
-                <option value="{{ attack_type.value }}" {% if attack_type.value == selected_attack_type %}selected{% endif %}>
-                    {{ attack_type.value }}
+        <label for="skill_level">Skill Level</label>
+        <select id="skill_level" name="skill_level" onchange="this.form.submit()">
+            {% for skill_level in skill_levels %}
+                <option value="{{ skill_level }}" {% if skill_level == selected_basic_attack_level %}selected{% endif %}>
+                    {{ skill_level }}
                 </option>
             {% endfor %}
         </select>

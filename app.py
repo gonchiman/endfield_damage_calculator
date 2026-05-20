@@ -24,7 +24,7 @@ def index():
 def damage_calculator_1():
     selected_operator_id = request.form.get("operator_id", OperatorIds.LIFENG.value)
     selected_level = int(request.form.get("operator_level", 1))
-    selected_basic_attack_level = int(request.form.get("basic_attack_level", 1))
+    selected_basic_attack_level = int(request.form.get("skill_level", 1))
     
     selected_attack_type = request.form.get(
         "attack_type",
@@ -68,7 +68,7 @@ def damage_calculator_1():
             AttackTypes.DIVE_ATTACK,
         ],
         attack_steps=range(1, max_attack_step + 1),
-        basic_attack_levels=SKILL_RANKS,
+        skill_levels=SKILL_RANKS,
         operator_levels=OperatorStatusRepository.find_levels_by_operator_id(selected_operator_id),
         damage=damage
     )
